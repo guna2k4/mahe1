@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #fc32bf; /* Orange background color for the entire page */
+    }
+
+    #main-div {
+        width: 50%;
+        margin: 10vh auto; /* Center the box vertically */
+        padding: 20px;
+        background-color: #40ce15; /* Red background color for the box */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    #main-div h1 {
+        color: #ffffff; /* White text color for the heading */
+    }
+
+    #main-div p {
+        color: #ffffff; /* White text color for the paragraph */
+    }
+
+    #main-div a {
+        color: #007bff; /* Bootstrap primary color for the link */
+    }
+</style>
+
+<div id="main-div">
+    <h1>Create User</h1>
+    <form method="post" action="{% url 'create-user' %}" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create User</button>
+    </form>
+
+    <p>Already have an account? Login <a href="{% url 'login' %}">here</a></p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    .login-form-container {
+        width: 30%;
+        margin: 10vh auto; /* Adjust the vertical margin to center the form */
+        background-color: #ff0000; /* Red background color */
+        padding: 15px;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(223, 214, 214, 0.849);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Bootstrap primary color */
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Darker color on hover */
+        border-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <div class="login-form-container">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <p>Dont have an account? Create one <a href="{% url 'create-user' %}">here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

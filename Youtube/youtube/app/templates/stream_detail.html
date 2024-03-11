@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ivy Streams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #181818;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        video {
+            border: 2px solid #282828;
+            background-color: #000;
+            max-width: 100%;
+            max-height: 80vh;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            background-color: #ff0000; /* YouTube red color */
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 2px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #cc0000; /* Slightly darker shade on hover */
+        }
+
+        #chat-box {
+            width: 80%;
+            max-width: 500px;
+            height: 300px;
+            overflow-y: scroll;
+            border: 2px solid #282828;
+            background-color: #181818;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        #message-input {
+            width: 80%;
+            max-width: 500px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid #282828;
+            background-color: #181818;
+            color: #fff;
+        }
+
+        #send-btn {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #send-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="start-btn">Start Stream</button>
+    <button id="stop-btn" style="display:none;">Stop Stream</button>
+
+    <video id="video" autoplay muted></video>
+    <audio id="audio" autoplay muted></audio>
+
+    <div id="chat-box"></div>
+    <input type="text" id="message-input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const video = document.getElementById('video');
+        const audio = document.getElementById('audio'); // Added audio element
+        const chatBox = document.getElementById('chat-box');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        let stream;
+
+        startBtn.addEventListener('click', startStream);
+        stopBtn.addEventListener('click', stopStream);
+        sendBtn.addEventListener('click', sendMessage);
+
+        async function startStream() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                video.srcObject = stream;
+                audio.srcObject = stream; // Set the audio stream to the audio element
+                startBtn.style.display = 'none';
+                stopBtn.style.display = 'block';
+            } catch (error) {
+                console.error('Error accessing media devices:', error);
+            }
+        }
+
+        function stopStream() {
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+                audio.srcObject = null; // Remove audio stream from the audio element
+                startBtn.style.display = 'block';
+                stopBtn.style.display = 'none';
+            }
+        }
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                messageInput.value = '';
+            }
+        }
+    </script>
+</body>
+
+</html>
